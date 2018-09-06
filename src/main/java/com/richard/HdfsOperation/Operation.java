@@ -1,8 +1,7 @@
 package com.richard.HdfsOperation;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +60,6 @@ public class Operation
     public void download() throws IOException {
         //2 下载文件到本地
         fileSystem.copyToLocalFile(new Path("hdfs://master:8020/richard/hello.txt"),new Path("D:\\Study-Git\\hadoop-hdfs\\src\\main\\resources\\download\\hello.txt"));
-
         //3 关闭
         fileSystem.close();
         System.out.println("over");
@@ -97,5 +95,75 @@ public class Operation
         //3 关闭
         fileSystem.close();
         System.out.println("over");
+    }
+
+    /**
+    * @description: 更改文件或文件夹名
+    * @param:
+    * @author: richard.wang
+    * @date: 2018/9/6 16:45
+    * @version: v1.0
+    */
+    @Test
+    public void rename() throws IOException {
+        //2 更名
+        fileSystem.rename(new Path("hdfs://master:8020/richard/hello1.txt"),new Path("hdfs://master:8020/richard/hello2.txt"));
+        //3 关闭
+        fileSystem.close();
+        System.out.println("over");
+    }
+
+    /**
+    * @description: 查看文件详情
+    * @param:
+    * @author: richard.wang
+    * @date: 2018/9/6 17:10
+    * @version: v1.0
+    */
+    @Test
+    public void readList() throws IOException {
+        RemoteIterator<LocatedFileStatus> listFiles = fileSystem.listFiles(new Path("/richard"), true);
+        while (listFiles.hasNext()){
+            LocatedFileStatus fileStatus = listFiles.next();
+            // 获取文件名
+            System.out.println(fileStatus.getPath().getName());
+            // 获取块大小
+            System.out.println(fileStatus.getBlockSize());
+            // 获取文件权限
+            System.out.println(fileStatus.getPermission());
+            //字节长
+            System.out.println(fileStatus.getLen());
+
+            BlockLocation[] blockLocations = fileStatus.getBlockLocations();
+            for (BlockLocation bl:blockLocations){
+                System.out.println("block-offset:"+bl.getOffset());
+                String[] hosts = bl.getHosts();
+                for (String host:hosts){
+                    System.out.println(host);
+                }
+            }
+            System.out.println("---------杨幂的发际线------------");
+        }
+    }
+
+    /**
+    * @description: 文件夹查看  
+    * @param: 
+    * @author: richard.wang
+    * @date: 2018/9/6 17:12
+    * @version: v1.0
+    */
+    @Test
+    public void find() throws IOException {
+        //2 查询路径下的文件状态信息
+        FileStatus[] fileStatuses = fileSystem.listStatus(new Path("/richard"));
+        //3 遍历所有文件状态
+        for (FileStatus status:fileStatuses){
+            if (status.isFile()){
+                System.out.println("f--"+status.getPath().getName());
+            }else {
+                System.out.println("d--"+status.getPath().getName());
+            }
+        }
     }
 }
