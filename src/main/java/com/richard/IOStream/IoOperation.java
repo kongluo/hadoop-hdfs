@@ -159,6 +159,7 @@ public class IoOperation
     * @date: 2018/9/7 9:35
     * @version: v1.0
     */
+    @Test
     public void writeFile() throws IOException {
         //2 创建文件输出流
         Path path = new Path("hdfs://master:8020/richard/hello.txt");

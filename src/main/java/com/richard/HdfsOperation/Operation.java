@@ -42,7 +42,7 @@ public class Operation
     @Test
     public void Upload() throws IOException {
         //2 把本地文件上传到文件系统中
-        fileSystem.copyFromLocalFile(new Path("D:\\Study-Git\\hadoop-hdfs\\src\\main\\resources\\hello.txt"),new Path("/richard/hello1.txt"));
+        fileSystem.copyFromLocalFile(new Path("D:\\Study-Git\\hadoop-hdfs\\src\\main\\resources\\hello.txt"),new Path("/richard/hello3.txt"));
 
         //3 关闭资源
         fileSystem.close();
