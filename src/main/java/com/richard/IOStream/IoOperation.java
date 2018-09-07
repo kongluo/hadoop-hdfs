@@ -151,4 +151,23 @@ public class IoOperation
     /*
     *  type hadoop-2.6.0-cdh5.11.0.tar.gz.part3 >> hadoop-2.6.0-cdh5.11.0.tar.gz.part2 >> hadoop-2.6.0-cdh5.11.0.tar.gz.part1
     * */
+
+    /**
+    * @description: 添加一致性原则  
+    * @param: 
+    * @author: richard.wang
+    * @date: 2018/9/7 9:35
+    * @version: v1.0
+    */
+    public void writeFile() throws IOException {
+        //2 创建文件输出流
+        Path path = new Path("hdfs://master:8020/richard/hello.txt");
+        FSDataOutputStream fos = fileSystem.create(path);
+        //3 写数据
+        fos.write("hello".getBytes());
+        //4 一致性刷新
+        fos.hflush();
+        //5 关闭
+        fos.close();
+    }
 }
